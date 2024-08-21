@@ -3,6 +3,7 @@ extends HBoxContainer
 
 const Baker: Script = preload("res://addons/terrain_3d/src/baker.gd")
 const Packer: Script = preload("res://addons/terrain_3d/src/channel_packer.gd")
+const TerrainFromMesh: Script = preload("res://addons/terrain_3d/src/terrain_from_mesh.gd")
 
 var plugin: EditorPlugin
 var menu_button: MenuButton = MenuButton.new()
@@ -16,6 +17,7 @@ enum {
 	MENU_SEPARATOR,
 	MENU_SET_UP_NAVIGATION,
 	MENU_PACK_TEXTURES,
+	MENU_CREATE_FROM_MESH
 }
 
 
@@ -32,7 +34,9 @@ func _enter_tree() -> void:
 	menu_button.get_popup().add_separator("", MENU_SEPARATOR)
 	menu_button.get_popup().add_item("Set up Navigation", MENU_SET_UP_NAVIGATION)
 	menu_button.get_popup().add_separator("", MENU_SEPARATOR)
-	menu_button.get_popup().add_item("Pack Textures", MENU_PACK_TEXTURES)	
+	menu_button.get_popup().add_item("Pack Textures", MENU_PACK_TEXTURES)
+	menu_button.get_popup().add_separator("", MENU_SEPARATOR)
+	menu_button.get_popup().add_item("Create from Meshes", MENU_CREATE_FROM_MESH)
 	
 	menu_button.get_popup().id_pressed.connect(_on_menu_pressed)
 	menu_button.about_to_popup.connect(_on_menu_about_to_popup)
@@ -57,6 +61,8 @@ func _on_menu_pressed(p_id: int) -> void:
 			baker.set_up_navigation_popup()
 		MENU_PACK_TEXTURES:
 			packer.pack_textures_popup()
+		MENU_CREATE_FROM_MESH:
+			TerrainFromMesh.new(plugin.terrain)
 
 
 func _on_menu_about_to_popup() -> void:
